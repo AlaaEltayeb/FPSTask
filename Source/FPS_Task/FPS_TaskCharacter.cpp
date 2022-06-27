@@ -107,7 +107,7 @@ void AFPS_TaskCharacter::BeginPlay()
 		Mesh1P->SetHiddenInGame(false, true);
 	}
 
-	//IncreasePlayerCount();
+	IncreasePlayerCount();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -313,19 +313,20 @@ bool AFPS_TaskCharacter::EnableTouchscreenMovement(class UInputComponent* Player
 
 	return false;
 }
-//
-//void AFPS_TaskCharacter::IncreasePlayerCount_Implementation()
-//{
-//	/*AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
-//
-//	if (HasAuthority())
-//		gameState->PlayersCount++;*/
-//
-//	/*if (gameState->PlayersCount % 2 == 0)
-//		bIsRed = false;*/
-//}
-//
-//bool AFPS_TaskCharacter::IncreasePlayerCount_Validate()
-//{
-//	return true;
-//}
+
+void AFPS_TaskCharacter::IncreasePlayerCount_Implementation()
+{
+	if (HasAuthority())
+	{
+		AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
+		gameState->PlayersCount++;
+
+		if (gameState->PlayersCount % 2 == 0)
+			bIsRed = false;
+	}
+}
+
+bool AFPS_TaskCharacter::IncreasePlayerCount_Validate()
+{
+	return true;
+}

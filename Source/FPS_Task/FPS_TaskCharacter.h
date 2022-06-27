@@ -155,6 +155,6 @@ public:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Test")
 		bool bIsRed = true;
 
-	/*UFUNCTION(Server, Reliable, WithValidation)
-		void IncreasePlayerCount();*/
+	UFUNCTION(Server, Reliable, WithValidation)
+		void IncreasePlayerCount();
 };
