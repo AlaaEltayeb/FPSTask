@@ -16,7 +16,7 @@ class FPS_TASK_API AMyGameStateBase : public AGameStateBase
 
 public:
 	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Gameplay")
-		int iPlayersCount = 0;
+		int iPlayersCount = -1;
 
 public:
 	AMyGameStateBase();

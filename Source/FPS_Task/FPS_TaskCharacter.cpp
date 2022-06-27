@@ -20,6 +20,17 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 AFPS_TaskCharacter::AFPS_TaskCharacter()
 {
+	//iTeamNumber = FMath::RandRange(0, 1);
+
+	/*if (GetLocalRole() == ROLE_Authority)
+	{
+		iTeamNumber = 0;
+	}
+	else
+	{
+		iTeamNumber = 1;
+	}*/
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
@@ -81,10 +92,24 @@ AFPS_TaskCharacter::AFPS_TaskCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+	
+
+	/*if (HasAuthority())
+	{
+		iTeamNumber = 0;
+		bIsRed = false;
+	}
+	else
+	{
+		iTeamNumber = 1;
+		bIsRed = true;
+	}*/
 	/*if (HasAuthority())
 		bIsRed = false;*/
 		// Uncomment the following line to turn motion controllers on by default:
 		//bUsingMotionControllers = true;
+
+	//iTeamNumber = FMath::RandRange(0, 1);
 }
 
 void AFPS_TaskCharacter::BeginPlay()
@@ -107,7 +132,25 @@ void AFPS_TaskCharacter::BeginPlay()
 		Mesh1P->SetHiddenInGame(false, true);
 	}
 
-	IncreasePlayerCount();
+	/*if (HasAuthority())
+	{
+		iTeamNumber = 0;
+		bIsRed = false;
+	}
+	else
+	{
+		iTeamNumber = 1;
+		bIsRed = true;
+	}*/
+
+	/*IncreasePlayerCount();
+
+	AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
+	if (gameState->iPlayersCount % 2 == 0)
+		bIsRed = false;*/
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -322,9 +365,6 @@ void AFPS_TaskCharacter::IncreasePlayerCount_Implementation()
 	{
 		gameState->iPlayersCount++;
 	}
-
-	if (gameState->iPlayersCount % 2 == 0)
-		bIsRed = false;
 }
 
 bool AFPS_TaskCharacter::IncreasePlayerCount_Validate()

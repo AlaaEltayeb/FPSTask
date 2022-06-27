@@ -152,7 +152,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Test")
 		bool bIsCarryingFlag;
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Test")
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Test")
 		bool bIsRed = true;
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Test")
