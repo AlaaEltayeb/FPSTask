@@ -316,14 +316,15 @@ bool AFPS_TaskCharacter::EnableTouchscreenMovement(class UInputComponent* Player
 
 void AFPS_TaskCharacter::IncreasePlayerCount_Implementation()
 {
+	AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
+
 	if (HasAuthority())
 	{
-		AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
-		gameState->PlayersCount++;
-
-		if (gameState->PlayersCount % 2 == 0)
-			bIsRed = false;
+		gameState->iPlayersCount++;
 	}
+
+	if (gameState->iPlayersCount % 2 == 0)
+		bIsRed = false;
 }
 
 bool AFPS_TaskCharacter::IncreasePlayerCount_Validate()
