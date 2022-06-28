@@ -91,9 +91,6 @@ protected:
 	/** Fires a projectile. */
 	void OnFire();
 
-	UFUNCTION(Server, Reliable, WithValidation)
-		void ServerFire();
-
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
 
@@ -141,6 +138,9 @@ protected:
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
+	UPROPERTY(BlueprintReadOnly, Category = "Test")
+		int Health = 100;
+
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -155,9 +155,8 @@ public:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Test")
 		bool bIsRed = true;
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Test")
-		int iTeamNumber = -1;
-
 	UFUNCTION(Server, Reliable, WithValidation)
-		void IncreasePlayerCount();
+		void ServerFire();
+
+	void TakeDamage();
 };

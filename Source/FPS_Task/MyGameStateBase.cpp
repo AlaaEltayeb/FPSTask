@@ -36,5 +36,4 @@ void AMyGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(AMyGameStateBase, fGameTimer);
 	DOREPLIFETIME(AMyGameStateBase, iRedTeamFlagCount);
 	DOREPLIFETIME(AMyGameStateBase, iBlueTeamFlagCount);
-	DOREPLIFETIME(AMyGameStateBase, iPlayersCount);
 }

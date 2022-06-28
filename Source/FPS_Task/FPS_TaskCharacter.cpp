@@ -92,24 +92,10 @@ AFPS_TaskCharacter::AFPS_TaskCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
-	
-
-	/*if (HasAuthority())
-	{
-		iTeamNumber = 0;
-		bIsRed = false;
-	}
-	else
-	{
-		iTeamNumber = 1;
-		bIsRed = true;
-	}*/
 	/*if (HasAuthority())
 		bIsRed = false;*/
 		// Uncomment the following line to turn motion controllers on by default:
 		//bUsingMotionControllers = true;
-
-	//iTeamNumber = FMath::RandRange(0, 1);
 }
 
 void AFPS_TaskCharacter::BeginPlay()
@@ -131,26 +117,6 @@ void AFPS_TaskCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
-
-	/*if (HasAuthority())
-	{
-		iTeamNumber = 0;
-		bIsRed = false;
-	}
-	else
-	{
-		iTeamNumber = 1;
-		bIsRed = true;
-	}*/
-
-	/*IncreasePlayerCount();
-
-	AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
-	if (gameState->iPlayersCount % 2 == 0)
-		bIsRed = false;*/
-
-	SetReplicates(true);
-	SetReplicateMovement(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -357,17 +323,12 @@ bool AFPS_TaskCharacter::EnableTouchscreenMovement(class UInputComponent* Player
 	return false;
 }
 
-void AFPS_TaskCharacter::IncreasePlayerCount_Implementation()
+void AFPS_TaskCharacter::TakeDamage()
 {
-	AMyGameStateBase* gameState = Cast<AMyGameStateBase>(GetWorld()->GetGameState());
+	Health -= 10;
 
-	if (HasAuthority())
+	if (Health <= 0)
 	{
-		gameState->iPlayersCount++;
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "Player Died");
 	}
-}
-
-bool AFPS_TaskCharacter::IncreasePlayerCount_Validate()
-{
-	return true;
 }

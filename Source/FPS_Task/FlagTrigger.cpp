@@ -7,7 +7,6 @@
 #include <FPS_Task/FPS_TaskCharacter.h>
 #include <FPS_Task/MyGameStateBase.h>
 #include <Runtime/Engine/Public/Net/UnrealNetwork.h>
-#include <string>
 
 // Sets default values
 AFlagTrigger::AFlagTrigger()
@@ -50,20 +49,21 @@ void AFlagTrigger::PlayEffect()
 
 void AFlagTrigger::NotifyActorBeginOverlap(AActor* OtherActor)
 {
+
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if (GetLocalRole() != ROLE_Authority)
-		return;
+	/*if (GetLocalRole() != ROLE_Authority)
+		return;*/
 
 	AFPS_TaskCharacter* MyCharacter = Cast<AFPS_TaskCharacter>(OtherActor);
 
 	if (!MyCharacter)
 		return;
 
-	//FString test = FString::FromInt(MyCharacter->iTeamNumber);
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, test);
-	if((bool)MyCharacter->iTeamNumber != bIsRedFlag && bHasFlag && !MyCharacter->bIsCarryingFlag)
-	//if (MyCharacter->bIsRed != bIsRedFlag && bHasFlag)
+	if (!MyCharacter->IsLocallyControlled())
+		return;
+
+	if (MyCharacter->bIsRed != bIsRedFlag && bHasFlag && !MyCharacter->bIsCarryingFlag)
 	{
 		PlayEffect();
 
@@ -75,7 +75,7 @@ void AFlagTrigger::NotifyActorBeginOverlap(AActor* OtherActor)
 
 		bHasFlag = false;
 	}
-	else if ((bool)MyCharacter->iTeamNumber == bIsRedFlag && MyCharacter->bIsCarryingFlag)
+	else if (MyCharacter->bIsRed == bIsRedFlag && MyCharacter->bIsCarryingFlag)
 	{
 		MyCharacter->bIsCarryingFlag = false;
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, "Flag Captured");

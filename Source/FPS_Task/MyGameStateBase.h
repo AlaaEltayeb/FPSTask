@@ -15,10 +15,6 @@ class FPS_TASK_API AMyGameStateBase : public AGameStateBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Gameplay")
-		int iPlayersCount = -1;
-
-public:
 	AMyGameStateBase();
 
 	virtual void Tick(float DeltaTime) override;

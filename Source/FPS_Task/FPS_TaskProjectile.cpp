@@ -3,6 +3,7 @@
 #include "FPS_TaskProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include <FPS_Task/FPS_TaskCharacter.h>
 
 AFPS_TaskProjectile::AFPS_TaskProjectile() 
 {
@@ -41,11 +42,23 @@ void AFPS_TaskProjectile::BeginPlay()
 
 void AFPS_TaskProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	AActor* MyOwner = GetOwner();
+	{
+		if (OtherActor != MyOwner)
+		{
+			AFPS_TaskCharacter* HitCharacter = Cast<AFPS_TaskCharacter>(OtherActor);
+			if (HitCharacter)
+			{
+				HitCharacter->TakeDamage();
+			}
+		}
+	}
+
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
+		
 		Destroy();
 	}
 }

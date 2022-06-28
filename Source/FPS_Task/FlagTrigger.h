@@ -36,10 +36,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void PlayEffect();
-
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
 		bool bIsRedFlag;
 
 	bool bHasFlag = true;
+
+	void PlayEffect();
 };
