@@ -46,7 +46,7 @@ AFPS_TaskCharacter::AFPS_TaskCharacter()
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
+	Mesh1P->SetOnlyOwnerSee(false);
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
@@ -92,6 +92,9 @@ AFPS_TaskCharacter::AFPS_TaskCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	Mesh1P->SetIsReplicated(true);
 	/*if (HasAuthority())
 		bIsRed = false;*/
 		// Uncomment the following line to turn motion controllers on by default:
@@ -117,6 +120,10 @@ void AFPS_TaskCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	Mesh1P->SetIsReplicated(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -325,10 +332,12 @@ bool AFPS_TaskCharacter::EnableTouchscreenMovement(class UInputComponent* Player
 
 void AFPS_TaskCharacter::TakeDamage()
 {
-	Health -= 10;
+	if (Health > 0)
+		Health -= 10;
 
 	if (Health <= 0)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "Player Died");
+		bIsCarryingFlag = false;
 	}
 }

@@ -50,6 +50,8 @@ void AFPS_TaskProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 			if (HitCharacter)
 			{
 				HitCharacter->TakeDamage();
+
+				Destroy();
 			}
 		}
 	}

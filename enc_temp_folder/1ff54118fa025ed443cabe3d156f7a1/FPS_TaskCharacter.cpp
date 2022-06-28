@@ -117,6 +117,10 @@ void AFPS_TaskCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	Mesh1P->SetIsReplicated(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -321,4 +325,16 @@ bool AFPS_TaskCharacter::EnableTouchscreenMovement(class UInputComponent* Player
 	}
 
 	return false;
+}
+
+void AFPS_TaskCharacter::TakeDamage()
+{
+	if (Health > 0)
+		Health -= 10;
+
+	if (Health <= 0)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "Player Died");
+		bIsCarryingFlag = false;
+	}
 }
